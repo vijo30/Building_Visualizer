@@ -31,7 +31,7 @@ VIEW_4 = 4
 VIEW_5 = 5
 
 PERSPECTIVE = 0
-ORTOGRAPHIC = 1
+ORTHOGRAPHIC = 1
 
 # A class to store the application control
 class Controller:
@@ -72,7 +72,7 @@ def on_key(window, key, scancode, action, mods):
         controller.projection = PERSPECTIVE
         
     elif key == glfw.KEY_O:
-        controller.projection = ORTOGRAPHIC
+        controller.projection = ORTHOGRAPHIC
         
     elif key == glfw.KEY_1:
         controller.view = VIEW_1
@@ -250,7 +250,7 @@ if __name__ == "__main__":
         if controller.projection == PERSPECTIVE:
           projection = tr.perspective(45, float(width) / float(height), 0.1, 100)
           
-        elif controller.projection == ORTOGRAPHIC:
+        elif controller.projection == ORTHOGRAPHIC:
           projection = tr.ortho(2 * -float(width) / float(height), 2 * float(width) / float(height), -2, 2, 0.1, 100)
           
         # Selecting view
