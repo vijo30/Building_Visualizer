@@ -53,7 +53,6 @@ class Controller:
         self.view = VIEW_5
         self.projection = PERSPECTIVE
         self.light = DAY_LIGHT
-        self.transition = False
 
 
 # We will use the global controller as communication with the callback function
@@ -227,7 +226,7 @@ if __name__ == "__main__":
     shapeDice = createDice()
     gpuDice = createGPUShape(textureGouraudPipeline, shapeDice)
     gpuDice.texture = es.textureSimpleSetup(
-        getAssetPath("dice.jpg"), GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR)
+        getAssetPath("dice2.jpg"), GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR)
 
     # Since the only difference between both dices is the texture, we can just use the same
     # GPU data, but with another texture.
@@ -244,9 +243,6 @@ if __name__ == "__main__":
     t0 = glfw.get_time()
     camera_theta = np.pi / 4
     cameraZ = 2
-    
-    time_frames = np.arange(0.0, 1.0, 0.0001)
-    time_index = 0
 
     while not glfw.window_should_close(window):
 
@@ -282,24 +278,24 @@ if __name__ == "__main__":
         # Selecting view
         
         if controller.view == VIEW_1:
-          camX = 4
-          camY = 4
+          camX = 2
+          camY = 2
           camZ = 2
           
         elif controller.view == VIEW_2:
-          camX = -4
-          camY = -4
+          camX = -2
+          camY = -2
           camZ = -2
           
         elif controller.view == VIEW_3:
-          camX = 5
-          camY = 3
-          camZ = -7
+          camX = 1
+          camY = 1
+          camZ = -1
           
         elif controller.view == VIEW_4:
-          camX = 4
-          camY = 4
-          camZ = 10
+          camX = 0.1
+          camY = 0.1
+          camZ = 2
           
         elif controller.view == VIEW_5:
           camX = 4 * np.sin(camera_theta)
@@ -405,7 +401,7 @@ if __name__ == "__main__":
 
         # Drawing
         glUniformMatrix4fv(glGetUniformLocation(lightingPipeline.shaderProgram, "model"), 1, GL_TRUE,
-                           tr.translate(0, 0, 0))
+                           tr.scale(0.25, 0.25, 0.25))
         lightingPipeline.drawCall(gpuDice)
 
 
