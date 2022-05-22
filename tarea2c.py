@@ -33,14 +33,27 @@ VIEW_5 = 5
 PERSPECTIVE = 0
 ORTHOGRAPHIC = 1
 
+DAY_LIGHT = 0
+NIGHT_LIGHT = 1
+
+def linear_interpol(t, a, b):
+    return a * t + b * (1 - t)
+
+
+
+
+
+#linear_interpol(time_frames[time_index],a,b)
 # A class to store the application control
 class Controller:
     def __init__(self):
         self.fillPolygon = True
         self.showAxis = True
-        self.lightingModel = LIGHT_FLAT
-        self.view = VIEW_1
+        self.lightingModel = LIGHT_PHONG
+        self.view = VIEW_5
         self.projection = PERSPECTIVE
+        self.light = DAY_LIGHT
+        self.transition = False
 
 
 # We will use the global controller as communication with the callback function
@@ -88,6 +101,14 @@ def on_key(window, key, scancode, action, mods):
         
     elif key == glfw.KEY_5:
         controller.view = VIEW_5
+        
+    elif key == glfw.KEY_Z:
+        controller.light = DAY_LIGHT
+        glfw.set_time(0)
+    
+    elif key == glfw.KEY_X:
+        controller.light = NIGHT_LIGHT
+        glfw.set_time(0)
 
     elif key == glfw.KEY_ESCAPE:
         glfw.set_window_should_close(window, True)
@@ -223,6 +244,9 @@ if __name__ == "__main__":
     t0 = glfw.get_time()
     camera_theta = np.pi / 4
     cameraZ = 2
+    
+    time_frames = np.arange(0.0, 1.0, 0.0001)
+    time_index = 0
 
     while not glfw.window_should_close(window):
 
@@ -233,7 +257,9 @@ if __name__ == "__main__":
         t1 = glfw.get_time()
         dt = t1 - t0
         t0 = t1
-
+        
+        time = min(t1/3,1)
+        
         if (glfw.get_key(window, glfw.KEY_LEFT) == glfw.PRESS):
             camera_theta -= 2 * dt
 
@@ -315,31 +341,65 @@ if __name__ == "__main__":
         else:
             raise Exception()
 
-        glUseProgram(lightingPipeline.shaderProgram)
+        glUseProgram(lightingPipeline.shaderProgram)         
+        
+        if controller.light == DAY_LIGHT:
+            glClearColor(linear_interpol(time,135/255,42/255), linear_interpol(time,206/255,42/255), linear_interpol(time,235/255,53/255), 1.0) 
+            
+            #glClearColor(linear_interpol(time,42/255,135/255), linear_interpol(time,42/255,206/255), linear_interpol(time,53/255,235/255), 1.0)
+            
+            # Setting all uniform shader variables
+            # linear_interpol(time_frames[time_index],0.1,1.0)
+            # White light in all components: ambient, diffuse and specular.
+            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "La"), linear_interpol(time,0.9,0.2), linear_interpol(time,0.94,0.2), linear_interpol(time,0.96,0.3))
+            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ld"), linear_interpol(time,1.0,0.5), linear_interpol(time,1.0,0.5), linear_interpol(time,1.0,0.55))
+            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ls"), 1.0, 1.0, 1.0)
 
-        # Setting all uniform shader variables
+            # Object is barely visible at only ambient. Bright white for diffuse and specular components.
+            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ka"), 0.2, 0.2, 0.2)
+            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Kd"), 0.9, 0.9, 0.9)
+            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ks"), 1.0, 1.0, 1.0)
 
-        # White light in all components: ambient, diffuse and specular.
-        glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "La"), 1.0, 1.0, 1.0)
-        glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ld"), 1.0, 1.0, 1.0)
-        glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ls"), 1.0, 1.0, 1.0)
+            # TO DO: Explore different parameter combinations to understand their effect!
 
-        # Object is barely visible at only ambient. Bright white for diffuse and specular components.
-        glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ka"), 0.2, 0.2, 0.2)
-        glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Kd"), 0.9, 0.9, 0.9)
-        glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ks"), 1.0, 1.0, 1.0)
+            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "lightPosition"), -4, -4, 4)
+            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "viewPosition"), viewPos[0], viewPos[1],
+                        viewPos[2])
+            glUniform1ui(glGetUniformLocation(lightingPipeline.shaderProgram, "shininess"), 100)
 
-        # TO DO: Explore different parameter combinations to understand their effect!
+            glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "constantAttenuation"), 0.0001)
+            glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "linearAttenuation"), 0.03)
+            glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "quadraticAttenuation"), 0.01)
+        
+        elif controller.light == NIGHT_LIGHT:
+            glClearColor(linear_interpol(time,42/255,135/255), linear_interpol(time,42/255,206/255), linear_interpol(time,53/255,235/255), 1.0)
+            # Setting all uniform shader variables
 
-        glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "lightPosition"), -5, -5, 5)
-        glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "viewPosition"), viewPos[0], viewPos[1],
-                    viewPos[2])
-        glUniform1ui(glGetUniformLocation(lightingPipeline.shaderProgram, "shininess"), 100)
+            # White light in all components: ambient, diffuse and specular.
+            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "La"), linear_interpol(time,0.2,0.9), linear_interpol(time,0.2,0.94), linear_interpol(time,0.3,0.96))
+            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ld"), linear_interpol(time,0.5,1.0), linear_interpol(time,0.5,1.0), linear_interpol(time,0.55,1.0))
+            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ls"), 1.0, 1.0, 1.0)
 
-        glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "constantAttenuation"), 0.0001)
-        glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "linearAttenuation"), 0.03)
-        glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "quadraticAttenuation"), 0.01)
+            # Object is barely visible at only ambient. Bright white for diffuse and specular components.
+            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ka"), 0.2, 0.2, 0.2)
+            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Kd"), 0.9, 0.9, 0.9)
+            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ks"), 1.0, 1.0, 1.0)
 
+            # TO DO: Explore different parameter combinations to understand their effect!
+
+            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "lightPosition"), -4, -4, 4)
+            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "viewPosition"), viewPos[0], viewPos[1],
+                        viewPos[2])
+            glUniform1ui(glGetUniformLocation(lightingPipeline.shaderProgram, "shininess"), 100)
+
+            glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "constantAttenuation"), 0.0001)
+            glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "linearAttenuation"), 0.03)
+            glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "quadraticAttenuation"), 0.01)
+            
+
+
+        
+        ##
         glUniformMatrix4fv(glGetUniformLocation(lightingPipeline.shaderProgram, "projection"), 1, GL_TRUE, projection)
         glUniformMatrix4fv(glGetUniformLocation(lightingPipeline.shaderProgram, "view"), 1, GL_TRUE, view)
 
