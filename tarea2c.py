@@ -16,6 +16,8 @@ import grafica.basic_shapes as bs
 import grafica.easy_shaders as es
 import grafica.lighting_shaders as ls
 from grafica.assets_path import getAssetPath
+import tarea2modelos as modelo
+import grafica.scene_graph as sg
 
 __author__ = "Daniel Calderon"
 __license__ = "MIT"
@@ -48,7 +50,7 @@ def linear_interpol(t, a, b):
 class Controller:
     def __init__(self):
         self.fillPolygon = True
-        self.showAxis = True
+        self.showAxis = False
         self.lightingModel = LIGHT_PHONG
         self.view = VIEW_5
         self.projection = PERSPECTIVE
@@ -227,6 +229,8 @@ if __name__ == "__main__":
     gpuDice = createGPUShape(textureGouraudPipeline, shapeDice)
     gpuDice.texture = es.textureSimpleSetup(
         getAssetPath("dice2.jpg"), GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR)
+    
+    willisTower = modelo.createWillisTower(gpuDice)
 
     # Since the only difference between both dices is the texture, we can just use the same
     # GPU data, but with another texture.
@@ -240,6 +244,7 @@ if __name__ == "__main__":
     print("Dice      : ", gpuDice)
     print("Blue Dice : ", gpuDiceBlue)
 
+    
     t0 = glfw.get_time()
     camera_theta = np.pi / 4
     cameraZ = 2
@@ -273,42 +278,67 @@ if __name__ == "__main__":
           projection = tr.perspective(45, float(width) / float(height), 0.1, 100)
           
         elif controller.projection == ORTHOGRAPHIC:
-          projection = tr.ortho(2 * -float(width) / float(height), 2 * float(width) / float(height), -2, 2, 0.1, 100)
+          projection = tr.ortho(4 * -float(width) / float(height), 4 * float(width) / float(height), -4, 4, 0.1, 100)
           
         # Selecting view
         
         if controller.view == VIEW_1:
-          camX = 2
-          camY = 2
-          camZ = 2
-          
-        elif controller.view == VIEW_2:
-          camX = -2
-          camY = -2
-          camZ = -2
-          
-        elif controller.view == VIEW_3:
-          camX = 1
-          camY = 1
-          camZ = -1
-          
-        elif controller.view == VIEW_4:
-          camX = 0.1
-          camY = 0.1
-          camZ = 2
-          
-        elif controller.view == VIEW_5:
-          camX = 4 * np.sin(camera_theta)
-          camY = 4 * np.cos(camera_theta)
-          camZ = cameraZ
-
-        viewPos = np.array([camX, camY, camZ])
-
-        view = tr.lookAt(
+          camX = 7
+          camY = 7
+          camZ = 20
+          viewPos = np.array([camX, camY, camZ])
+          view = tr.lookAt(
             viewPos,
             np.array([0, 0, 0]),
             np.array([0, 0, 1])
         )
+          
+        elif controller.view == VIEW_2:
+          camX = 5
+          camY = 0
+          camZ = 5
+          viewPos = np.array([camX, camY, camZ])
+          view = tr.lookAt(
+            viewPos,
+            np.array([0, 0, 0]),
+            np.array([0, 0, 1])
+        )
+          
+        elif controller.view == VIEW_3:
+          camX = 9
+          camY = 9
+          camZ = -10
+          viewPos = np.array([camX, camY, camZ])
+          view = tr.lookAt(
+            viewPos,
+            np.array([0, 0, 0]),
+            np.array([0, 0, 1])
+        )
+          
+        elif controller.view == VIEW_4:
+          camX = 0.0001
+          camY = 0.0001
+          camZ = 11
+          viewPos = np.array([camX, camY, camZ])
+          view = tr.lookAt(
+            viewPos,
+            np.array([0, 0, 0]),
+            np.array([0, 0, 1])
+        )
+          
+        elif controller.view == VIEW_5:
+          camX = 8 * np.sin(camera_theta)
+          camY = 8 * np.cos(camera_theta)
+          camZ = cameraZ
+          viewPos = np.array([camX, camY, camZ])
+          view = tr.lookAt(
+            viewPos,
+            np.array([0, 0, camZ]),
+            np.array([0, 0, 1])
+        )
+
+
+
 
         # Clearing the screen in both, color and depth
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -358,7 +388,7 @@ if __name__ == "__main__":
 
             # TO DO: Explore different parameter combinations to understand their effect!
 
-            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "lightPosition"), -4, -4, 4)
+            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "lightPosition"), -4, -4, 8)
             glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "viewPosition"), viewPos[0], viewPos[1],
                         viewPos[2])
             glUniform1ui(glGetUniformLocation(lightingPipeline.shaderProgram, "shininess"), 100)
@@ -383,7 +413,7 @@ if __name__ == "__main__":
 
             # TO DO: Explore different parameter combinations to understand their effect!
 
-            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "lightPosition"), -4, -4, 4)
+            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "lightPosition"), -4, -4, 8)
             glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "viewPosition"), viewPos[0], viewPos[1],
                         viewPos[2])
             glUniform1ui(glGetUniformLocation(lightingPipeline.shaderProgram, "shininess"), 100)
@@ -400,9 +430,8 @@ if __name__ == "__main__":
         glUniformMatrix4fv(glGetUniformLocation(lightingPipeline.shaderProgram, "view"), 1, GL_TRUE, view)
 
         # Drawing
-        glUniformMatrix4fv(glGetUniformLocation(lightingPipeline.shaderProgram, "model"), 1, GL_TRUE,
-                           tr.scale(0.25, 0.25, 0.25))
-        lightingPipeline.drawCall(gpuDice)
+        #glUniformMatrix4fv(glGetUniformLocation(lightingPipeline.shaderProgram, "model"), 1, GL_TRUE, modelo.createWillisTower())
+        sg.drawSceneGraphNode(willisTower, lightingPipeline, "model")
 
 
         # Once the drawing is rendered, buffers are swap so an uncomplete drawing is never seen.
