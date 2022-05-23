@@ -38,6 +38,10 @@ ORTHOGRAPHIC = 1
 DAY_LIGHT = 0
 NIGHT_LIGHT = 1
 
+WILLIS_TOWER = 0
+EMPIRE_STATE = 1
+BURJ_AL_ARAB = 2
+
 def linear_interpol(t, a, b):
     return a * t + b * (1 - t)
 
@@ -55,6 +59,7 @@ class Controller:
         self.view = VIEW_5
         self.projection = PERSPECTIVE
         self.light = DAY_LIGHT
+        self.building = WILLIS_TOWER
 
 
 # We will use the global controller as communication with the callback function
@@ -231,6 +236,7 @@ if __name__ == "__main__":
         getAssetPath("dice2.jpg"), GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR)
     
     willisTower = modelo.createWillisTower(gpuDice)
+    empireState = modelo.createEmpireState(gpuDice)
 
     # Since the only difference between both dices is the texture, we can just use the same
     # GPU data, but with another texture.
@@ -379,7 +385,7 @@ if __name__ == "__main__":
             # White light in all components: ambient, diffuse and specular.
             glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "La"), linear_interpol(time,0.9,0.2), linear_interpol(time,0.94,0.2), linear_interpol(time,0.96,0.3))
             glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ld"), linear_interpol(time,1.0,0.5), linear_interpol(time,1.0,0.5), linear_interpol(time,1.0,0.55))
-            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ls"), 1.0, 1.0, 1.0)
+            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ls"), linear_interpol(time,1.0,0.5), linear_interpol(time,1.0,0.5), linear_interpol(time,1.0,0.5))
 
             # Object is barely visible at only ambient. Bright white for diffuse and specular components.
             glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ka"), 0.2, 0.2, 0.2)
@@ -404,7 +410,7 @@ if __name__ == "__main__":
             # White light in all components: ambient, diffuse and specular.
             glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "La"), linear_interpol(time,0.2,0.9), linear_interpol(time,0.2,0.94), linear_interpol(time,0.3,0.96))
             glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ld"), linear_interpol(time,0.5,1.0), linear_interpol(time,0.5,1.0), linear_interpol(time,0.55,1.0))
-            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ls"), 1.0, 1.0, 1.0)
+            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ls"), linear_interpol(time,0.5,1.0),  linear_interpol(time,0.5,1.0),  linear_interpol(time,0.5,1.0))
 
             # Object is barely visible at only ambient. Bright white for diffuse and specular components.
             glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ka"), 0.2, 0.2, 0.2)
@@ -431,7 +437,7 @@ if __name__ == "__main__":
 
         # Drawing
         #glUniformMatrix4fv(glGetUniformLocation(lightingPipeline.shaderProgram, "model"), 1, GL_TRUE, modelo.createWillisTower())
-        sg.drawSceneGraphNode(willisTower, lightingPipeline, "model")
+        sg.drawSceneGraphNode(empireState, lightingPipeline, "model")
 
 
         # Once the drawing is rendered, buffers are swap so an uncomplete drawing is never seen.
