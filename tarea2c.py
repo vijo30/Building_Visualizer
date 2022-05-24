@@ -35,8 +35,6 @@ VIEW_5 = 5
 PERSPECTIVE = 0
 ORTHOGRAPHIC = 1
 
-DAY_LIGHT = 0
-NIGHT_LIGHT = 1
 
 WILLIS_TOWER = 0
 EMPIRE_STATE = 1
@@ -58,7 +56,7 @@ class Controller:
         self.lightingModel = LIGHT_PHONG
         self.view = VIEW_5
         self.projection = PERSPECTIVE
-        self.light = DAY_LIGHT
+        self.day = True
         self.building = WILLIS_TOWER
 
 
@@ -78,13 +76,13 @@ def on_key(window, key, scancode, action, mods):
     elif key == glfw.KEY_LEFT_CONTROL:
         controller.showAxis = not controller.showAxis
 
-    elif key == glfw.KEY_Q:
+    elif key == glfw.KEY_7:
         controller.lightingModel = LIGHT_FLAT
 
-    elif key == glfw.KEY_W:
+    elif key == glfw.KEY_8:
         controller.lightingModel = LIGHT_GOURAUD
 
-    elif key == glfw.KEY_E:
+    elif key == glfw.KEY_9:
         controller.lightingModel = LIGHT_PHONG
         
     elif key == glfw.KEY_P:
@@ -108,13 +106,15 @@ def on_key(window, key, scancode, action, mods):
     elif key == glfw.KEY_5:
         controller.view = VIEW_5
         
-    elif key == glfw.KEY_Z:
-        controller.light = DAY_LIGHT
+    elif key == glfw.KEY_L:
+        controller.day = not controller.day
         glfw.set_time(0)
-    
-    elif key == glfw.KEY_X:
-        controller.light = NIGHT_LIGHT
-        glfw.set_time(0)
+        
+    elif key == glfw.KEY_W:
+        controller.building = WILLIS_TOWER
+        
+    elif key == glfw.KEY_E:
+        controller.building = EMPIRE_STATE
 
     elif key == glfw.KEY_ESCAPE:
         glfw.set_window_should_close(window, True)
@@ -289,9 +289,9 @@ if __name__ == "__main__":
         # Selecting view
         
         if controller.view == VIEW_1:
-          camX = 7
-          camY = 7
-          camZ = 20
+          camX = -2
+          camY = 2
+          camZ = 15
           viewPos = np.array([camX, camY, camZ])
           view = tr.lookAt(
             viewPos,
@@ -311,8 +311,8 @@ if __name__ == "__main__":
         )
           
         elif controller.view == VIEW_3:
-          camX = 9
-          camY = 9
+          camX = 5
+          camY = 5
           camZ = -10
           viewPos = np.array([camX, camY, camZ])
           view = tr.lookAt(
@@ -333,8 +333,8 @@ if __name__ == "__main__":
         )
           
         elif controller.view == VIEW_5:
-          camX = 8 * np.sin(camera_theta)
-          camY = 8 * np.cos(camera_theta)
+          camX = 6 * np.sin(camera_theta)
+          camY = 6 * np.cos(camera_theta)
           camZ = cameraZ
           viewPos = np.array([camX, camY, camZ])
           view = tr.lookAt(
@@ -375,7 +375,7 @@ if __name__ == "__main__":
 
         glUseProgram(lightingPipeline.shaderProgram)         
         
-        if controller.light == DAY_LIGHT:
+        if controller.day:
             glClearColor(linear_interpol(time,135/255,42/255), linear_interpol(time,206/255,42/255), linear_interpol(time,235/255,53/255), 1.0) 
             
             #glClearColor(linear_interpol(time,42/255,135/255), linear_interpol(time,42/255,206/255), linear_interpol(time,53/255,235/255), 1.0)
@@ -403,7 +403,7 @@ if __name__ == "__main__":
             glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "linearAttenuation"), 0.03)
             glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "quadraticAttenuation"), 0.01)
         
-        elif controller.light == NIGHT_LIGHT:
+        elif not controller.day:
             glClearColor(linear_interpol(time,42/255,135/255), linear_interpol(time,42/255,206/255), linear_interpol(time,53/255,235/255), 1.0)
             # Setting all uniform shader variables
 
@@ -437,7 +437,12 @@ if __name__ == "__main__":
 
         # Drawing
         #glUniformMatrix4fv(glGetUniformLocation(lightingPipeline.shaderProgram, "model"), 1, GL_TRUE, modelo.createWillisTower())
-        sg.drawSceneGraphNode(empireState, lightingPipeline, "model")
+        
+        if controller.building == WILLIS_TOWER:
+          sg.drawSceneGraphNode(willisTower, lightingPipeline, "model")
+          
+        elif controller.building == EMPIRE_STATE:
+          sg.drawSceneGraphNode(empireState, lightingPipeline, "model")
 
 
         # Once the drawing is rendered, buffers are swap so an uncomplete drawing is never seen.

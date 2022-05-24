@@ -1,0 +1,148 @@
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="-708 -512 1024 512">
+ <title>Clustered tube structure of the Willis Tower</title>
+ <desc>Dimetric projections of bundled tube structure of the Willis (Sears) Tower and simplified floor plans, by CMG Lee.</desc>
+ <defs>
+  <g id="tube50" fill="#9999ff">
+   <path d="M 0 0 l 23 -11.5 v -205 l -23 -11.5 l -23 11.5 v 205 Z"/>
+   <path d="M 0 0 l 23 -11.5 v -205 l -23 11.5 Z" fill="#000000" fill-opacity="0.5"/>
+   <path d="M -23 -11.5 l 23 11.5 v -205 l -23 -11.5 Z" fill="#000000" fill-opacity="0.25"/>
+  </g>
+  <g id="tube66" fill="#66cc66">
+   <path d="M 0 0 l 23 -11.5 v -270 l -23 -11.5 l -23 11.5 v 270 Z"/>
+   <path d="M 0 0 l 23 -11.5 v -270 l -23 11.5 Z" fill="#000000" fill-opacity="0.5"/>
+   <path d="M -23 -11.5 l 23 11.5 v -270 l -23 -11.5 Z" fill="#000000" fill-opacity="0.25"/>
+  </g>
+  <g id="tube90" fill="#ffcc66">
+   <path d="M 0 0 l 23 -11.5 v -368 l -23 -11.5 l -23 11.5 v 368 Z"/>
+   <path d="M 0 0 l 23 -11.5 v -368 l -23 11.5 Z" fill="#000000" fill-opacity="0.5"/>
+   <path d="M -23 -11.5 l 23 11.5 v -368 l -23 -11.5 Z" fill="#000000" fill-opacity="0.25"/>
+  </g>
+  <g id="tube108" fill="#ff9999">
+   <path d="M 0 0 l 23 -11.5 v -442 l -23 -11.5 l -23 11.5 v 442 Z"/>
+   <path d="M 0 0 l 23 -11.5 v -442 l -23 11.5 Z" fill="#000000" fill-opacity="0.5"/>
+   <path d="M -23 -11.5 l 23 11.5 v -442 l -23 -11.5 Z" fill="#000000" fill-opacity="0.25"/>
+  </g>
+  <g id="tubesall">
+   <use transform="translate(23,-34.5)" xlink:href="#tube90"/>
+   <use transform="translate(-46,-23)" xlink:href="#tube50"/>
+   <use transform="translate(46,-23)" xlink:href="#tube50"/>
+   <use transform="translate(0,-23)" xlink:href="#tube108"/>
+   <use transform="translate(-23,-11.5)" xlink:href="#tube108"/>
+   <use transform="translate(23,-11.5)" xlink:href="#tube90"/>
+   <use xlink:href="#tube66"/>
+  </g>
+  <g id="tubebase" stroke="#000000" fill="#ffffff">
+   <path d="M 0 0 l 69 -34.5 l -69 -34.5 l -69 34.5 Z"/>
+   <path transform="translate(-46,-23)" d="M 0 0 l 69 -34.5"/>
+   <path transform="translate(-23,-11.5)" d="M 0 0 l 69 -34.5"/>
+   <path transform="translate(46,-23)" d="M 0 0 l -69 -34.5"/>
+   <path transform="translate(23,-11.5)" d="M 0 0 l -69 -34.5"/>
+   <use xlink:href="#tubesall" opacity="0.2"/>
+  </g>
+  <g id="tubes50">
+   <use xlink:href="#tubebase"/>
+   <use transform="translate(-46,-23)" xlink:href="#tube50"/>
+   <use transform="translate(46,-23)" xlink:href="#tube50"/>
+  </g>
+  <g id="tubes66">
+   <use xlink:href="#tubebase"/>
+   <use transform="translate(0,-46)" xlink:href="#tube66"/>
+   <use xlink:href="#tube66"/>
+  </g>
+  <g id="tubes90">
+   <use xlink:href="#tubebase"/>
+   <use transform="translate(-23,-34.5)" xlink:href="#tube90"/>
+   <use transform="translate(23,-34.5)" xlink:href="#tube90"/>
+   <use transform="translate(23,-11.5)" xlink:href="#tube90"/>
+  </g>
+  <g id="tubes108">
+   <use xlink:href="#tubebase"/>
+   <use transform="translate(0,-23)" xlink:href="#tube108"/>
+   <use transform="translate(-23,-11.5)" xlink:href="#tube108"/>
+  </g>
+  <g id="tubebands" fill="#000000" fill-opacity="0.25">
+   <path d="M 0 -119 l 69 -34.5 v -16 l -69 34.5 l -69 -34.5 v 16 Z"/>
+   <path d="M 0 -262 l 46 -23 v -8 l -46 23 l -46 -23 v 8 Z"/>
+   <path d="M 0 -383 l 23 11.5 l 23 -11.5 v -8 l -23 11.5 l -23 -11.5 l -23 11.5 l -23 -11.5 v 8 l 23 11.5 l 23 -11.5 Z"/>
+   <path d="M 46 -406 v -8 l -23 11.5 l 8 4 l 23 -11.5 Z"/>
+   <path d="M -23 -433 l 46 -23 v -16 l -46 23 l -23 -11.5 v 16 l 23 11.5 Z"/>
+  </g>
+  <g id="tubes">
+   <use transform="translate(-640,0)" xlink:href="#tubes50"/>
+   <use transform="translate(-480,0)" xlink:href="#tubes66"/>
+   <use transform="translate(-320,0)" xlink:href="#tubes90"/>
+   <use transform="translate(-160,0)" xlink:href="#tubes108"/>
+   <use xlink:href="#tubesall"/>
+   <use xlink:href="#tubebands"/>
+  </g>
+
+  <rect id="planbase" x="0" y="0" width="90" height="90" stroke-dasharray="4,4" fill="none"/>
+  <g id="plan50" fill="#9999ff">
+   <rect x="0" y="0" width="30" height="30"/>
+   <rect x="60" y="60" width="30" height="30"/>
+  </g>
+  <g id="plan66" fill="#66cc66">
+   <rect x="60" y="0" width="30" height="30"/>
+   <rect x="0" y="60" width="30" height="30"/>
+  </g>
+  <g id="plan90" fill="#ffcc66">
+   <rect x="30" y="0" width="30" height="30"/>
+   <rect x="60" y="30" width="30" height="30"/>
+   <rect x="30" y="60" width="30" height="30"/>
+  </g>
+  <g id="plan108" fill="#ff9999">
+   <rect x="0" y="30" width="30" height="30"/>
+   <rect x="30" y="30" width="30" height="30"/>
+  </g>
+  <g id="plans" transform="translate(225,-170)" stroke="#000000">
+   <g transform="translate(0,-330)">
+    <use xlink:href="#planbase"/>
+    <use xlink:href="#plan108"/>
+   </g>
+   <g transform="translate(0,-220)">
+    <use xlink:href="#planbase"/>
+    <use xlink:href="#plan90"/>
+    <use xlink:href="#plan108"/>
+   </g>
+   <g transform="translate(0,-110)">
+    <use xlink:href="#planbase"/>
+    <use xlink:href="#plan66"/>
+    <use xlink:href="#plan90"/>
+    <use xlink:href="#plan108"/>
+   </g>
+   <use xlink:href="#plan50"/>
+   <use xlink:href="#plan66"/>
+   <use xlink:href="#plan90"/>
+   <use xlink:href="#plan108"/>
+  </g>
+
+  <g id="text" text-anchor="middle" font-family="sans-serif" font-size="32" letter-spacing="-1" fill="#000000">
+   <g transform="translate(0,-265)">
+    <text x="-560" y="0">+</text>
+    <text x="-400" y="0">+</text>
+    <text x="-240" y="0">+</text>
+    <text x="-80" y="0">=</text>
+   </g>
+   <g transform="translate(0,-487)">
+    <text x="-640" y="0">50 floors</text>
+    <text x="-480" y="0">66 floors</text>
+    <text x="-320" y="0">90 floors</text>
+    <text x="-160" y="0">108 floors</text>
+   </g>
+   <g transform="translate(215,0)" text-anchor="end">
+    <text x="0" y="-150"><tspan>__ Floors</tspan><tspan x="0" dy="1em">1 - 50</tspan></text>
+    <text x="0" y="-260"><tspan>__ Floors</tspan><tspan x="0" dy="1em">51-66</tspan></text>
+    <text x="0" y="-370"><tspan>__ Floors</tspan><tspan x="0" dy="1em">67-90</tspan></text>
+    <text x="0" y="-480"><tspan>__ Floors</tspan><tspan x="0" dy="1em" letter-spacing="-3">91-108</tspan></text>
+   </g>
+   <text transform="translate(200,-40)" x="0" y="0">
+    <tspan>Simplified</tspan>
+    <tspan x="0" dy="1em">cross-sections</tspan>
+   </text>
+  </g>
+ </defs>
+ <use xlink:href="#tubes" />
+ <use xlink:href="#plans" />
+ <use xlink:href="#text" />
+</svg>

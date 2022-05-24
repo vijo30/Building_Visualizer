@@ -136,40 +136,55 @@ def createWillisTower(object):
 
 def createEmpireState(object):
   block_1 = sg.SceneGraphNode("block_1")
-  block_1.transform = tr.matmul([tr.translate(0, 0, 0.45), tr.scale(1, 0.4, 0.7)])
+  block_1.transform = tr.matmul([tr.translate(0, 0, 0.25), tr.scale(1, 0.5, 0.5)])
   block_1.childs += [object]
   
   block_2_1 = sg.SceneGraphNode("block_2_1")
-  block_2_1.transform = tr.scale(0.8, 0.3, 2.4)
+  block_2_1.transform = tr.scale(0.7, 0.35, 2.4)
   block_2_1.childs += [object]
   
+  
+  block_2_2 = sg.SceneGraphNode("block_2_2")
+  block_2_2.transform = tr.matmul([tr.translate(0.2, 0, -0.2), tr.scale(0.7/3, 0.45, 2.0)])
+  block_2_2.childs += [object]
+  
+    
+  block_2_3 = sg.SceneGraphNode("block_2_3")
+  block_2_3.transform = tr.matmul([tr.translate(-0.2, 0, -0.2), tr.scale(0.7/3, 0.45, 2.0)])
+  block_2_3.childs += [object]
+  
+
   block_2 = sg.SceneGraphNode("block_2")
-  block_2.transform = tr.translate(0, 0, 0.7+1.2)
-  block_2.childs += [block_2_1]
+  block_2.transform = tr.translate(0, 0, 0.5+1.2)
+  block_2.childs += [block_2_1, block_2_2, block_2_3]
   
 
   block_3_1 = sg.SceneGraphNode("block_3_1")
-  block_3_1.transform = tr.scale(0.5, 0.3, 5.5)
+  block_3_1.transform = tr.scale(0.5, 0.35, 5.5)
   block_3_1.childs += [object]
 
   
   block_3 = sg.SceneGraphNode("block_3")
-  block_3.transform = tr.translate(0, 0, 0.7+2.4+2.75)
+  block_3.transform = tr.translate(0, 0, 0.5+2.4+2.75)
   block_3.childs += [block_3_1]
   
   
   block_4_1 = sg.SceneGraphNode("block_4_1")
-  block_4_1.transform = tr.scale(0.5, 0.2, 0.6)
+  block_4_1.transform = tr.scale(0.5, 0.3, 0.6)
   block_4_1.childs += [object]
   
   
   block_4 = sg.SceneGraphNode("block_4")
-  block_4.transform = tr.translate(0, 0, 0.7+2.4+5.5+0.3)
+  block_4.transform = tr.translate(0, 0, 0.5+2.4+5.5+0.3)
   block_4.childs += [block_4_1]
+  
+  pilar = sg.SceneGraphNode("pilar")
+  pilar.transform = tr.matmul([tr.translate(0, 0, 0.5+2.4+5.5+0.3+1), tr.scale(0.1, 0.1, 2)])
+  pilar.childs += [object]
   
   empireState = sg.SceneGraphNode("empireState")
   empireState.transform = tr.translate(0, 0, -2)
-  empireState.childs += [block_1, block_2, block_3, block_4]
+  empireState.childs += [block_1, block_2, block_3, block_4, pilar]
   
   return empireState
   
