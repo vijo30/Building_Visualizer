@@ -339,19 +339,66 @@ def createEmpireState(object):
 def createBurjAlArab(object):
   
   left_pillar = sg.SceneGraphNode("left_pillar")
-  left_pillar.transform = tr.matmul([tr.translate(-0.1, -0.4, 2), tr.scale(0.1, 0.1, 12/3)])
+  left_pillar.transform = tr.matmul([tr.translate(-0.13, -0.4, 1.5), tr.rotationZ(-np.pi/3), tr.scale(0.2, 0.1, 9/3)])
   left_pillar.childs += [object]
   
+
+  
   right_pillar = sg.SceneGraphNode("right_pillar")
-  right_pillar.transform = tr.matmul([tr.translate(0.1, -0.4, 2), tr.scale(0.1, 0.1, 12/3)])
+  right_pillar.transform = tr.matmul([tr.translate(0.13, -0.4, 1.5), tr.rotationZ(np.pi/3), tr.scale(0.2, 0.1, 9/3)])
   right_pillar.childs += [object]  
   
+
+  
   center_pillar = sg.SceneGraphNode("center_pillar")
-  center_pillar.transform = tr.matmul([tr.translate(0, -0.5, 2), tr.scale(0.1, 0.1, 12/3)])
+  center_pillar.transform = tr.matmul([tr.translate(0, -0.5, 7/6), tr.scale(0.1, 0.1, 7/3)])
   center_pillar.childs += [object]  
+  
+  center_pillar2 = sg.SceneGraphNode("center_pillar2")
+  center_pillar2.transform = tr.matmul([tr.translate(0, -0.5, (5/6)+7/3), tr.scale(0.05, 0.05, 5/3)])
+  center_pillar2.childs += [object]  
+    
+  
+  
+  horizontal_left1 = sg.SceneGraphNode("horizontal_left1")
+  horizontal_left1.transform = tr.matmul([tr.translate(0.02, np.sqrt(3)*-0.02+0.3, 0), tr.rotationZ(-np.pi/3), tr.scale(0.7, 0.05, 0.05)])
+  horizontal_left1.childs += [object] 
+  
+    
+  horizontal_left2 = sg.SceneGraphNode("horizontal_left2")
+  horizontal_left2.transform = tr.matmul([tr.translate(0.025, np.sqrt(3)*-0.025+0.3, 9/12), tr.rotationZ(-np.pi/3), tr.scale(0.65, 0.05, 0.05)])
+  horizontal_left2.childs += [object]
+    
+  horizontal_left3 = sg.SceneGraphNode("horizontal_left3")
+  horizontal_left3.transform = tr.matmul([tr.translate(0.03, np.sqrt(3)*-0.03+0.3, 2*9/12), tr.rotationZ(-np.pi/3), tr.scale(0.6, 0.05, 0.05)])
+  horizontal_left3.childs += [object]
+   
+  horizontal_right1 = sg.SceneGraphNode("horizontal_right1")
+  horizontal_right1.transform = tr.matmul([tr.translate(-0.02, np.sqrt(3)*-0.02+0.3, 0), tr.rotationZ(np.pi/3), tr.scale(0.7, 0.05, 0.05)])
+  horizontal_right1.childs += [object] 
+  
+    
+  horizontal_right2 = sg.SceneGraphNode("horizontal_right2")
+  horizontal_right2.transform = tr.matmul([tr.translate(-0.025, np.sqrt(3)*-0.025+0.3, 9/12), tr.rotationZ(np.pi/3), tr.scale(0.65, 0.05, 0.05)])
+  horizontal_right2.childs += [object]
+    
+  horizontal_right3 = sg.SceneGraphNode("horizontal_right3")
+  horizontal_right3.transform = tr.matmul([tr.translate(-0.03, np.sqrt(3)*-0.03+0.3, 2*9/12), tr.rotationZ(np.pi/3), tr.scale(0.6, 0.05, 0.05)])
+  horizontal_right3.childs += [object]
+     
+    
+  horizontal_left = sg.SceneGraphNode("horizontal_left")
+  horizontal_left.transform = tr.translate(-0.3-0.05, -0.3, 9/12)
+  horizontal_left.childs += [horizontal_left1, horizontal_left2, horizontal_left3]
+  
+  horizontal_right = sg.SceneGraphNode("horizontal_right")
+  horizontal_right.transform = tr.translate(0.3+0.05, -0.3, 9/12)
+  horizontal_right.childs += [horizontal_right1, horizontal_right2, horizontal_right3]
   
   burjAlArab = sg.SceneGraphNode("burjAlArab")
   burjAlArab.transform = tr.translate(0, 0, -1.5)
-  burjAlArab.childs += [left_pillar, right_pillar, center_pillar]
+  burjAlArab.childs += [left_pillar, right_pillar, center_pillar, center_pillar2, horizontal_left, horizontal_right]
+  
+
   
   return burjAlArab

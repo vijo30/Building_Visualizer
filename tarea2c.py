@@ -57,7 +57,7 @@ class Controller:
         self.view = VIEW_5
         self.projection = PERSPECTIVE
         self.day = True
-        self.building = EMPIRE_STATE
+        self.building = BURJ_AL_ARAB
 
 
 # We will use the global controller as communication with the callback function
