@@ -57,7 +57,7 @@ class Controller:
         self.view = VIEW_5
         self.projection = PERSPECTIVE
         self.day = True
-        self.building = WILLIS_TOWER
+        self.building = EMPIRE_STATE
 
 
 # We will use the global controller as communication with the callback function
@@ -115,6 +115,9 @@ def on_key(window, key, scancode, action, mods):
         
     elif key == glfw.KEY_E:
         controller.building = EMPIRE_STATE
+        
+    elif key == glfw.KEY_B:
+        controller.building = BURJ_AL_ARAB
 
     elif key == glfw.KEY_ESCAPE:
         glfw.set_window_should_close(window, True)
@@ -236,20 +239,19 @@ if __name__ == "__main__":
         getAssetPath("dice2.jpg"), GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR)
     
     willisTower = modelo.createWillisTower(gpuDice)
-    empireState = modelo.createEmpireState(gpuDice)
+
 
     # Since the only difference between both dices is the texture, we can just use the same
     # GPU data, but with another texture.
     # copy.deepcopy generate a true copy, so if we change gpuDiceBlue.texture (or any other
     # member), we will not change gpuDice.texture
-    gpuDiceBlue = copy.deepcopy(gpuDice)
-    gpuDiceBlue.texture = es.textureSimpleSetup(
-        getAssetPath("dice_blue.jpg"), GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR)
+    gpuDice3 = copy.deepcopy(gpuDice)
+    gpuDice3.texture = es.textureSimpleSetup(
+        getAssetPath("dice3.jpg"), GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR)
 
-    print("Here we can verify that we are using the same GPU buffers, but with a different texture")
-    print("Dice      : ", gpuDice)
-    print("Blue Dice : ", gpuDiceBlue)
-
+    empireState = modelo.createEmpireState(gpuDice3)
+    
+    burjAlArab = modelo.createBurjAlArab(gpuDice3)
     
     t0 = glfw.get_time()
     camera_theta = np.pi / 4
@@ -284,24 +286,13 @@ if __name__ == "__main__":
           projection = tr.perspective(45, float(width) / float(height), 0.1, 100)
           
         elif controller.projection == ORTHOGRAPHIC:
-          projection = tr.ortho(4 * -float(width) / float(height), 4 * float(width) / float(height), -4, 4, 0.1, 100)
+          projection = tr.ortho(2 * -float(width) / float(height), 2 * float(width) / float(height), -2, 2, 0.1, 100)
           
         # Selecting view
         
         if controller.view == VIEW_1:
-          camX = -2
-          camY = 2
-          camZ = 15
-          viewPos = np.array([camX, camY, camZ])
-          view = tr.lookAt(
-            viewPos,
-            np.array([0, 0, 0]),
-            np.array([0, 0, 1])
-        )
-          
-        elif controller.view == VIEW_2:
-          camX = 5
-          camY = 0
+          camX = -1
+          camY = 1
           camZ = 5
           viewPos = np.array([camX, camY, camZ])
           view = tr.lookAt(
@@ -310,10 +301,21 @@ if __name__ == "__main__":
             np.array([0, 0, 1])
         )
           
+        elif controller.view == VIEW_2:
+          camX = 5 * np.sin(camera_theta)
+          camY = 5 * np.cos(camera_theta)
+          camZ = cameraZ
+          viewPos = np.array([camX, camY, camZ])
+          view = tr.lookAt(
+            viewPos,
+            np.array([0, 0, 0]),
+            np.array([0, 0, 1])
+        )
+          
         elif controller.view == VIEW_3:
-          camX = 5
-          camY = 5
-          camZ = -10
+          camX = 3
+          camY = 3
+          camZ = 5
           viewPos = np.array([camX, camY, camZ])
           view = tr.lookAt(
             viewPos,
@@ -324,7 +326,7 @@ if __name__ == "__main__":
         elif controller.view == VIEW_4:
           camX = 0.0001
           camY = 0.0001
-          camZ = 11
+          camZ = 5
           viewPos = np.array([camX, camY, camZ])
           view = tr.lookAt(
             viewPos,
@@ -333,8 +335,8 @@ if __name__ == "__main__":
         )
           
         elif controller.view == VIEW_5:
-          camX = 6 * np.sin(camera_theta)
-          camY = 6 * np.cos(camera_theta)
+          camX = 5 * np.sin(camera_theta)
+          camY = 5 * np.cos(camera_theta)
           camZ = cameraZ
           viewPos = np.array([camX, camY, camZ])
           view = tr.lookAt(
@@ -344,7 +346,7 @@ if __name__ == "__main__":
         )
 
 
-
+        #print(camX, camY, camZ)
 
         # Clearing the screen in both, color and depth
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -384,8 +386,8 @@ if __name__ == "__main__":
             # linear_interpol(time_frames[time_index],0.1,1.0)
             # White light in all components: ambient, diffuse and specular.
             glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "La"), linear_interpol(time,0.9,0.2), linear_interpol(time,0.94,0.2), linear_interpol(time,0.96,0.3))
-            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ld"), linear_interpol(time,1.0,0.5), linear_interpol(time,1.0,0.5), linear_interpol(time,1.0,0.55))
-            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ls"), linear_interpol(time,1.0,0.5), linear_interpol(time,1.0,0.5), linear_interpol(time,1.0,0.5))
+            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ld"), linear_interpol(time,1.0,0.3), linear_interpol(time,1.0,0.3), linear_interpol(time,1.0,0.35))
+            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ls"), linear_interpol(time,1.0,0.4), linear_interpol(time,1.0,0.4), linear_interpol(time,1.0,0.4))
 
             # Object is barely visible at only ambient. Bright white for diffuse and specular components.
             glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ka"), 0.2, 0.2, 0.2)
@@ -394,7 +396,7 @@ if __name__ == "__main__":
 
             # TO DO: Explore different parameter combinations to understand their effect!
 
-            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "lightPosition"), -4, -4, 8)
+            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "lightPosition"), -2, -2, 4)
             glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "viewPosition"), viewPos[0], viewPos[1],
                         viewPos[2])
             glUniform1ui(glGetUniformLocation(lightingPipeline.shaderProgram, "shininess"), 100)
@@ -409,8 +411,8 @@ if __name__ == "__main__":
 
             # White light in all components: ambient, diffuse and specular.
             glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "La"), linear_interpol(time,0.2,0.9), linear_interpol(time,0.2,0.94), linear_interpol(time,0.3,0.96))
-            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ld"), linear_interpol(time,0.5,1.0), linear_interpol(time,0.5,1.0), linear_interpol(time,0.55,1.0))
-            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ls"), linear_interpol(time,0.5,1.0),  linear_interpol(time,0.5,1.0),  linear_interpol(time,0.5,1.0))
+            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ld"), linear_interpol(time,0.3,1.0), linear_interpol(time,0.3,1.0), linear_interpol(time,0.35,1.0))
+            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ls"), linear_interpol(time,0.4,1.0),  linear_interpol(time,0.4,1.0),  linear_interpol(time,0.4,1.0))
 
             # Object is barely visible at only ambient. Bright white for diffuse and specular components.
             glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ka"), 0.2, 0.2, 0.2)
@@ -419,7 +421,7 @@ if __name__ == "__main__":
 
             # TO DO: Explore different parameter combinations to understand their effect!
 
-            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "lightPosition"), -4, -4, 8)
+            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "lightPosition"), -2, -2, 4)
             glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "viewPosition"), viewPos[0], viewPos[1],
                         viewPos[2])
             glUniform1ui(glGetUniformLocation(lightingPipeline.shaderProgram, "shininess"), 100)
@@ -443,6 +445,9 @@ if __name__ == "__main__":
           
         elif controller.building == EMPIRE_STATE:
           sg.drawSceneGraphNode(empireState, lightingPipeline, "model")
+          
+        elif controller.building == BURJ_AL_ARAB:
+          sg.drawSceneGraphNode(burjAlArab, lightingPipeline, "model")
 
 
         # Once the drawing is rendered, buffers are swap so an uncomplete drawing is never seen.
@@ -451,6 +456,6 @@ if __name__ == "__main__":
     # freeing GPU memory
     gpuAxis.clear()
     gpuDice.clear()
-    gpuDiceBlue.clear()
+    gpuDice3.clear()
 
     glfw.terminate()
