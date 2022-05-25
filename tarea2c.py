@@ -253,6 +253,8 @@ if __name__ == "__main__":
     
     burjAlArab = modelo.createBurjAlArab(gpuDice3)
     
+    floor = modelo.create_floor(texturePhongPipeline)
+    
     t0 = glfw.get_time()
     camera_theta = np.pi / 4
     cameraZ = 2
@@ -291,13 +293,13 @@ if __name__ == "__main__":
         # Selecting view
         
         if controller.view == VIEW_1:
-          camX = -1
-          camY = 1
-          camZ = 5
+          camX = 0
+          camY = 3
+          camZ = 1
           viewPos = np.array([camX, camY, camZ])
           view = tr.lookAt(
             viewPos,
-            np.array([0, 0, 0]),
+            np.array([0, 0, camZ]),
             np.array([0, 0, 1])
         )
           
@@ -313,8 +315,8 @@ if __name__ == "__main__":
         )
           
         elif controller.view == VIEW_3:
-          camX = 3
-          camY = 3
+          camX = 1
+          camY = 0
           camZ = 5
           viewPos = np.array([camX, camY, camZ])
           view = tr.lookAt(
@@ -324,8 +326,8 @@ if __name__ == "__main__":
         )
           
         elif controller.view == VIEW_4:
-          camX = 0.0001
-          camY = 0.0001
+          camX = 0.00000001
+          camY = 0.00000001
           camZ = 5
           viewPos = np.array([camX, camY, camZ])
           view = tr.lookAt(
@@ -396,7 +398,7 @@ if __name__ == "__main__":
 
             # TO DO: Explore different parameter combinations to understand their effect!
 
-            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "lightPosition"), -2, -2, 4)
+            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "lightPosition"), 2, 2, 4)
             glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "viewPosition"), viewPos[0], viewPos[1],
                         viewPos[2])
             glUniform1ui(glGetUniformLocation(lightingPipeline.shaderProgram, "shininess"), 100)
@@ -421,7 +423,7 @@ if __name__ == "__main__":
 
             # TO DO: Explore different parameter combinations to understand their effect!
 
-            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "lightPosition"), -2, -2, 4)
+            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "lightPosition"), 2, 2, 4)
             glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "viewPosition"), viewPos[0], viewPos[1],
                         viewPos[2])
             glUniform1ui(glGetUniformLocation(lightingPipeline.shaderProgram, "shininess"), 100)
@@ -449,7 +451,7 @@ if __name__ == "__main__":
         elif controller.building == BURJ_AL_ARAB:
           sg.drawSceneGraphNode(burjAlArab, lightingPipeline, "model")
 
-
+        sg.drawSceneGraphNode(floor, lightingPipeline, "model")
         # Once the drawing is rendered, buffers are swap so an uncomplete drawing is never seen.
         glfw.swap_buffers(window)
 

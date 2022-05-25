@@ -171,6 +171,22 @@ def createDice():
       # Convenience function to ease initialization
 
 
+def create_floor(pipeline):
+    shapeFloor = bs.createTextureQuadWithNormal(8, 8)
+    gpuFloor = es.GPUShape().initBuffers()
+    pipeline.setupVAO(gpuFloor)
+    gpuFloor.texture = es.textureSimpleSetup(
+        getAssetPath("grass.jfif"), GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR)
+    gpuFloor.fillBuffers(shapeFloor.vertices, shapeFloor.indices, GL_STATIC_DRAW)
+
+    floor = sg.SceneGraphNode("floor")
+    floor.transform = tr.matmul([tr.translate(0, 0, -1.51),tr.scale(2, 2, 1)])
+    floor.childs += [gpuFloor]
+
+    return floor
+
+
+
 def createWillisTower(object):
   # Note: the vertex attribute layout (stride) is the same for the 3 lighting pipelines in
   # this case: flatPipeline, gouraudPipeline and phongPipeline. Hence, the VAO setup can
@@ -323,15 +339,15 @@ def createEmpireState(object):
 def createBurjAlArab(object):
   
   left_pillar = sg.SceneGraphNode("left_pillar")
-  left_pillar.transform = tr.matmul([tr.translate(-0.1, -0.9, 2), tr.scale(0.1, 0.1, 12/3)])
+  left_pillar.transform = tr.matmul([tr.translate(-0.1, -0.4, 2), tr.scale(0.1, 0.1, 12/3)])
   left_pillar.childs += [object]
   
   right_pillar = sg.SceneGraphNode("right_pillar")
-  right_pillar.transform = tr.matmul([tr.translate(0.1, -0.9, 2), tr.scale(0.1, 0.1, 12/3)])
+  right_pillar.transform = tr.matmul([tr.translate(0.1, -0.4, 2), tr.scale(0.1, 0.1, 12/3)])
   right_pillar.childs += [object]  
   
   center_pillar = sg.SceneGraphNode("center_pillar")
-  center_pillar.transform = tr.matmul([tr.translate(0, -1, 2), tr.scale(0.1, 0.1, 12/3)])
+  center_pillar.transform = tr.matmul([tr.translate(0, -0.5, 2), tr.scale(0.1, 0.1, 12/3)])
   center_pillar.childs += [object]  
   
   burjAlArab = sg.SceneGraphNode("burjAlArab")
