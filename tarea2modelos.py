@@ -47,7 +47,7 @@ def readFaceVertex(faceDescription):
     return faceVertex
 
 
-def readOBJ(filename, color):
+def readOBJ(filename):
     vertices = []
     normals = []
     textCoords = []
@@ -165,7 +165,7 @@ def create_floor(pipeline):
     gpuFloor.fillBuffers(shapeFloor.vertices, shapeFloor.indices, GL_STATIC_DRAW)
 
     floor = sg.SceneGraphNode("floor")
-    floor.transform = tr.matmul([tr.translate(0, 0, -1.51),tr.scale(2, 2, 1)])
+    floor.transform = tr.matmul([tr.translate(0, 0, -1.51),tr.scale(1, 1, 1)])
     floor.childs += [gpuFloor]
 
     return floor
@@ -216,7 +216,7 @@ def createWillisTower(object):
   floor_50_2.childs += [object]
   
   willisTower = sg.SceneGraphNode("willisTower")
-  willisTower.transform = tr.translate(0, 0, -1.5)
+  willisTower.transform = tr.matmul([tr.translate(0, 0, -1.5), tr.scale(0.5, 0.5, 0.5)])
   willisTower.childs += [floor_108_1, floor_108_2, floor_90_1, floor_90_2, floor_90_3, floor_66_1, floor_66_2, floor_50_1, floor_50_2]
   
   return willisTower
@@ -299,9 +299,18 @@ def createEmpireState(object):
   block_5_1.transform = tr.scale(0.4, 0.2, 0.6/3)
   block_5_1.childs += [object]
   
+  block_5_2 = sg.SceneGraphNode("block_5_2")
+  block_5_2.transform = tr.matmul([tr.translate(0, 0, 0.4/3), tr.scale(0.3, 0.15, 0.2/3)])
+  block_5_2.childs += [object]
+     
+  block_5_3 = sg.SceneGraphNode("block_5_3")
+  block_5_3.transform = tr.matmul([tr.translate(0, 0, 0.5/3), tr.scale(0.2, 0.15, 0.1/3)])
+  block_5_3.childs += [object]
+  
   block_5 = sg.SceneGraphNode("block_5")
   block_5.transform = tr.translate(0, 0, (0.5+2.4+5.5+0.3+0.3)/3)
-  block_5.childs += [block_5_1]
+  block_5.childs += [block_5_1, block_5_2, block_5_3]
+  
   
   pillar = sg.SceneGraphNode("pillar")
   pillar.transform = tr.matmul([tr.translate(0, 0, (0.5+2.4+5.5+0.3+0.3+1)/3), tr.scale(0.1, 0.1, 2/3)])
@@ -315,7 +324,7 @@ def createEmpireState(object):
   
   
   empireState = sg.SceneGraphNode("empireState")
-  empireState.transform = tr.translate(0, 0, -1.5)
+  empireState.transform = tr.matmul([tr.translate(0, 0, -1.5), tr.scale(0.5, 0.5, 0.5)])
   empireState.childs += [block_1, block_2, block_3, block_4, block_5, pillar, lighting_rod]
   
   return empireState
@@ -323,9 +332,13 @@ def createEmpireState(object):
   
 def createBurjAlArab(object, pipeline):
   
-  shapeBase = readOBJ(getAssetPath('cilinder_triangle_base.obj'), (1, 1, 1))
+  shapeBase = readOBJ(getAssetPath('cilinder_triangle_base.obj'))
   gpuBase = createGPUShape(pipeline, shapeBase)
-  gpuBase.texture = es.textureSimpleSetup(getAssetPath("dice3.jpg"), GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR)
+  gpuBase.texture = es.textureSimpleSetup(getAssetPath("dice5.jpg"), GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR)
+  
+  shape2Base = readOBJ(getAssetPath('bender_pillar.obj'))
+  gpu2Base = createGPUShape(pipeline, shape2Base)
+  gpu2Base.texture = es.textureSimpleSetup(getAssetPath("dice3.jpg"), GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR)
   
   
   left_pillar = sg.SceneGraphNode("left_pillar")
@@ -351,29 +364,29 @@ def createBurjAlArab(object, pipeline):
   
   
   horizontal_left1 = sg.SceneGraphNode("horizontal_left1")
-  horizontal_left1.transform = tr.matmul([tr.translate(0.02, np.sqrt(3)*-0.02+0.3, 0), tr.rotationZ(-np.pi/3), tr.scale(0.7, 0.05, 0.05)])
+  horizontal_left1.transform = tr.matmul([tr.translate(-0.03, np.sqrt(3)*0.03+0.3, 0), tr.rotationZ(-np.pi/3), tr.scale(1.0, 0.05, 0.05)])
   horizontal_left1.childs += [object] 
   
     
   horizontal_left2 = sg.SceneGraphNode("horizontal_left2")
-  horizontal_left2.transform = tr.matmul([tr.translate(0.025, np.sqrt(3)*-0.025+0.3, 9/12), tr.rotationZ(-np.pi/3), tr.scale(0.65, 0.05, 0.05)])
+  horizontal_left2.transform = tr.matmul([tr.translate(-0.025, np.sqrt(3)*+0.025+0.3, 9/12), tr.rotationZ(-np.pi/3), tr.scale(0.9, 0.05, 0.05)])
   horizontal_left2.childs += [object]
     
   horizontal_left3 = sg.SceneGraphNode("horizontal_left3")
-  horizontal_left3.transform = tr.matmul([tr.translate(0.03, np.sqrt(3)*-0.03+0.3, 2*9/12), tr.rotationZ(-np.pi/3), tr.scale(0.6, 0.05, 0.05)])
+  horizontal_left3.transform = tr.matmul([tr.translate(0.03, np.sqrt(3)*-0.03+0.3, 2*9/12), tr.rotationZ(-np.pi/3), tr.scale(0.65, 0.05, 0.05)])
   horizontal_left3.childs += [object]
    
   horizontal_right1 = sg.SceneGraphNode("horizontal_right1")
-  horizontal_right1.transform = tr.matmul([tr.translate(-0.02, np.sqrt(3)*-0.02+0.3, 0), tr.rotationZ(np.pi/3), tr.scale(0.7, 0.05, 0.05)])
+  horizontal_right1.transform = tr.matmul([tr.translate(0.015, np.sqrt(3)*0.015+0.3, 0), tr.rotationZ(np.pi/3), tr.scale(1.1, 0.05, 0.05)])
   horizontal_right1.childs += [object] 
   
     
   horizontal_right2 = sg.SceneGraphNode("horizontal_right2")
-  horizontal_right2.transform = tr.matmul([tr.translate(-0.025, np.sqrt(3)*-0.025+0.3, 9/12), tr.rotationZ(np.pi/3), tr.scale(0.65, 0.05, 0.05)])
+  horizontal_right2.transform = tr.matmul([tr.translate(0.025, np.sqrt(3)*0.025+0.3, 9/12), tr.rotationZ(np.pi/3), tr.scale(0.9, 0.05, 0.05)])
   horizontal_right2.childs += [object]
     
   horizontal_right3 = sg.SceneGraphNode("horizontal_right3")
-  horizontal_right3.transform = tr.matmul([tr.translate(-0.03, np.sqrt(3)*-0.03+0.3, 2*9/12), tr.rotationZ(np.pi/3), tr.scale(0.6, 0.05, 0.05)])
+  horizontal_right3.transform = tr.matmul([tr.translate(-0.03, np.sqrt(3)*-0.03+0.3, 2*9/12), tr.rotationZ(np.pi/3), tr.scale(0.65, 0.05, 0.05)])
   horizontal_right3.childs += [object]
      
     
@@ -389,9 +402,21 @@ def createBurjAlArab(object, pipeline):
   base.transform = tr.matmul([tr.translate(0, 0, 1.2), tr.rotationX(np.pi/2), tr.scale(0.5, 1.2, 0.5)])
   base.childs += [gpuBase]
   
+  pillar = sg.SceneGraphNode("pillar")
+  pillar.transform = tr.matmul([tr.translate(-0.28-0.34, -0.28*-np.sqrt(3), 0.88), tr.rotationZ(-np.pi/3), tr.rotationX(np.pi/2), tr.scale(0.35, 0.35, 0.25)])
+  pillar.childs += [gpu2Base]
+  
+  pillar2 = sg.SceneGraphNode("pillar2")
+  pillar2.transform = tr.matmul([tr.translate(0.28+0.34, -0.28*-np.sqrt(3), 0.88), tr.rotationZ(np.pi+np.pi/3), tr.rotationX(np.pi/2), tr.scale(0.35, 0.35, 0.25)])
+  pillar2.childs += [gpu2Base]
+  
+  quad = sg.SceneGraphNode("quad")
+  quad.transform = tr.matmul([tr.translate(0, -0.5, 3*9/12), tr.scale(0.6, 0.2, 0.1)])
+  quad.childs += [object]
+  
   burjAlArab = sg.SceneGraphNode("burjAlArab")
-  burjAlArab.transform = tr.translate(0, 0, -1.5)
-  burjAlArab.childs += [left_pillar, right_pillar, center_pillar, center_pillar2, horizontal_left, horizontal_right, base]
+  burjAlArab.transform = tr.matmul([tr.translate(0, 0, -1.5), tr.scale(0.5, 0.5, 0.5)])
+  burjAlArab.childs += [left_pillar, right_pillar, center_pillar, center_pillar2, horizontal_left, horizontal_right, base, pillar, pillar2, quad]
   
 
   

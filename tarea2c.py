@@ -251,7 +251,13 @@ if __name__ == "__main__":
 
     empireState = modelo.createEmpireState(gpuDice3)
     
-    burjAlArab = modelo.createBurjAlArab(gpuDice3, texturePhongPipeline)
+    gpuDice4 = copy.deepcopy(gpuDice)
+    gpuDice4.texture = es.textureSimpleSetup(
+        getAssetPath("dice4.jpg"), GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR)
+    
+    
+    
+    burjAlArab = modelo.createBurjAlArab(gpuDice4, texturePhongPipeline)
     
     floor = modelo.create_floor(texturePhongPipeline)
     
@@ -278,10 +284,10 @@ if __name__ == "__main__":
             camera_theta += 2 * dt
             
         if (glfw.get_key(window, glfw.KEY_UP) == glfw.PRESS):
-            cameraZ += 4 * dt
+            cameraZ += 2 * dt
             
         if (glfw.get_key(window, glfw.KEY_DOWN) == glfw.PRESS):
-            cameraZ -= 4 * dt        
+            cameraZ -= 2 * dt        
 
         # Selecting projection
         if controller.projection == PERSPECTIVE:
@@ -304,8 +310,8 @@ if __name__ == "__main__":
         )
           
         elif controller.view == VIEW_2:
-          camX = 5 * np.sin(camera_theta)
-          camY = 5 * np.cos(camera_theta)
+          camX = 3 * np.sin(camera_theta)
+          camY = 3 * np.cos(camera_theta)
           camZ = cameraZ
           viewPos = np.array([camX, camY, camZ])
           view = tr.lookAt(
@@ -317,7 +323,7 @@ if __name__ == "__main__":
         elif controller.view == VIEW_3:
           camX = 1
           camY = 0
-          camZ = 5
+          camZ = 3
           viewPos = np.array([camX, camY, camZ])
           view = tr.lookAt(
             viewPos,
@@ -328,7 +334,7 @@ if __name__ == "__main__":
         elif controller.view == VIEW_4:
           camX = 0.00000001
           camY = 0.00000001
-          camZ = 5
+          camZ = 3
           viewPos = np.array([camX, camY, camZ])
           view = tr.lookAt(
             viewPos,
@@ -337,8 +343,8 @@ if __name__ == "__main__":
         )
           
         elif controller.view == VIEW_5:
-          camX = 5 * np.sin(camera_theta)
-          camY = 5 * np.cos(camera_theta)
+          camX = 3 * np.sin(camera_theta)
+          camY = 3 * np.cos(camera_theta)
           camZ = cameraZ
           viewPos = np.array([camX, camY, camZ])
           view = tr.lookAt(
