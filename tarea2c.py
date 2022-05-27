@@ -294,7 +294,7 @@ if __name__ == "__main__":
           projection = tr.perspective(45, float(width) / float(height), 0.1, 100)
           
         elif controller.projection == ORTHOGRAPHIC:
-          projection = tr.ortho(2 * -float(width) / float(height), 2 * float(width) / float(height), -2, 2, 0.1, 100)
+          projection = tr.ortho(1 * -float(width) / float(height), 1 * float(width) / float(height), -1, 1, 0.1, 100)
           
         # Selecting view
         
