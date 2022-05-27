@@ -165,7 +165,7 @@ def create_floor(pipeline):
     gpuFloor.fillBuffers(shapeFloor.vertices, shapeFloor.indices, GL_STATIC_DRAW)
 
     floor = sg.SceneGraphNode("floor")
-    floor.transform = tr.matmul([tr.translate(0, 0, -1.51),tr.scale(1, 1, 1)])
+    floor.transform = tr.matmul([tr.translate(0, 0, -0.01-0.5),tr.scale(1, 1, 1)])
     floor.childs += [gpuFloor]
 
     return floor
@@ -216,7 +216,7 @@ def createWillisTower(object):
   floor_50_2.childs += [object]
   
   willisTower = sg.SceneGraphNode("willisTower")
-  willisTower.transform = tr.matmul([tr.translate(0, 0, -1.5), tr.scale(0.5, 0.5, 0.5)])
+  willisTower.transform = tr.matmul([tr.translate(0, 0, -0.5), tr.scale(0.5, 0.5, 0.5)])
   willisTower.childs += [floor_108_1, floor_108_2, floor_90_1, floor_90_2, floor_90_3, floor_66_1, floor_66_2, floor_50_1, floor_50_2]
   
   return willisTower
@@ -324,7 +324,7 @@ def createEmpireState(object):
   
   
   empireState = sg.SceneGraphNode("empireState")
-  empireState.transform = tr.matmul([tr.translate(0, 0, -1.5), tr.scale(0.5, 0.5, 0.5)])
+  empireState.transform = tr.matmul([tr.translate(0, 0, -0.5), tr.scale(0.5, 0.5, 0.5)])
   empireState.childs += [block_1, block_2, block_3, block_4, block_5, pillar, lighting_rod]
   
   return empireState
@@ -415,7 +415,7 @@ def createBurjAlArab(object, pipeline):
   quad.childs += [object]
   
   burjAlArab = sg.SceneGraphNode("burjAlArab")
-  burjAlArab.transform = tr.matmul([tr.translate(0, 0, -1.5), tr.scale(0.5, 0.5, 0.5)])
+  burjAlArab.transform = tr.matmul([tr.translate(0, 0, -0.5), tr.scale(0.5, 0.5, 0.5)])
   burjAlArab.childs += [left_pillar, right_pillar, center_pillar, center_pillar2, horizontal_left, horizontal_right, base, pillar, pillar2, quad]
   
 

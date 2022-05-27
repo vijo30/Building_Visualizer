@@ -263,7 +263,7 @@ if __name__ == "__main__":
     
     t0 = glfw.get_time()
     camera_theta = np.pi / 4
-    cameraZ = 2
+    cameraZ = 1
 
     while not glfw.window_should_close(window):
 
@@ -284,10 +284,10 @@ if __name__ == "__main__":
             camera_theta += 2 * dt
             
         if (glfw.get_key(window, glfw.KEY_UP) == glfw.PRESS):
-            cameraZ += 2 * dt
+            cameraZ += 1 * dt
             
         if (glfw.get_key(window, glfw.KEY_DOWN) == glfw.PRESS):
-            cameraZ -= 2 * dt        
+            cameraZ -= 1 * dt        
 
         # Selecting projection
         if controller.projection == PERSPECTIVE:
@@ -384,80 +384,200 @@ if __name__ == "__main__":
             raise Exception()
 
         glUseProgram(lightingPipeline.shaderProgram)         
-        
-        if controller.day:
-            glClearColor(linear_interpol(time,135/255,42/255), linear_interpol(time,206/255,42/255), linear_interpol(time,235/255,53/255), 1.0) 
-            
-            #glClearColor(linear_interpol(time,42/255,135/255), linear_interpol(time,42/255,206/255), linear_interpol(time,53/255,235/255), 1.0)
-            
-            # Setting all uniform shader variables
-            # linear_interpol(time_frames[time_index],0.1,1.0)
-            # White light in all components: ambient, diffuse and specular.
-            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "La"), linear_interpol(time,0.9,0.2), linear_interpol(time,0.94,0.2), linear_interpol(time,0.96,0.3))
-            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ld"), linear_interpol(time,1.0,0.3), linear_interpol(time,1.0,0.3), linear_interpol(time,1.0,0.35))
-            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ls"), linear_interpol(time,1.0,0.4), linear_interpol(time,1.0,0.4), linear_interpol(time,1.0,0.4))
 
-            # Object is barely visible at only ambient. Bright white for diffuse and specular components.
-            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ka"), 0.2, 0.2, 0.2)
-            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Kd"), 0.9, 0.9, 0.9)
-            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ks"), 1.0, 1.0, 1.0)
-
-            # TO DO: Explore different parameter combinations to understand their effect!
-
-            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "lightPosition"), 2, 2, 4)
-            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "viewPosition"), viewPos[0], viewPos[1],
-                        viewPos[2])
-            glUniform1ui(glGetUniformLocation(lightingPipeline.shaderProgram, "shininess"), 100)
-
-            glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "constantAttenuation"), 0.0001)
-            glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "linearAttenuation"), 0.03)
-            glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "quadraticAttenuation"), 0.01)
-        
-        elif not controller.day:
-            glClearColor(linear_interpol(time,42/255,135/255), linear_interpol(time,42/255,206/255), linear_interpol(time,53/255,235/255), 1.0)
-            # Setting all uniform shader variables
-
-            # White light in all components: ambient, diffuse and specular.
-            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "La"), linear_interpol(time,0.2,0.9), linear_interpol(time,0.2,0.94), linear_interpol(time,0.3,0.96))
-            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ld"), linear_interpol(time,0.3,1.0), linear_interpol(time,0.3,1.0), linear_interpol(time,0.35,1.0))
-            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ls"), linear_interpol(time,0.4,1.0),  linear_interpol(time,0.4,1.0),  linear_interpol(time,0.4,1.0))
-
-            # Object is barely visible at only ambient. Bright white for diffuse and specular components.
-            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ka"), 0.2, 0.2, 0.2)
-            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Kd"), 0.9, 0.9, 0.9)
-            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ks"), 1.0, 1.0, 1.0)
-
-            # TO DO: Explore different parameter combinations to understand their effect!
-
-            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "lightPosition"), 2, 2, 4)
-            glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "viewPosition"), viewPos[0], viewPos[1],
-                        viewPos[2])
-            glUniform1ui(glGetUniformLocation(lightingPipeline.shaderProgram, "shininess"), 100)
-
-            glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "constantAttenuation"), 0.0001)
-            glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "linearAttenuation"), 0.03)
-            glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "quadraticAttenuation"), 0.01)
-            
-
-
-        
-        ##
-        glUniformMatrix4fv(glGetUniformLocation(lightingPipeline.shaderProgram, "projection"), 1, GL_TRUE, projection)
-        glUniformMatrix4fv(glGetUniformLocation(lightingPipeline.shaderProgram, "view"), 1, GL_TRUE, view)
 
         # Drawing
-        #glUniformMatrix4fv(glGetUniformLocation(lightingPipeline.shaderProgram, "model"), 1, GL_TRUE, modelo.createWillisTower())
         
         if controller.building == WILLIS_TOWER:
+          if controller.day:
+              glClearColor(linear_interpol(time,135/255,42/255), linear_interpol(time,206/255,42/255), linear_interpol(time,235/255,53/255), 1.0) 
+              
+              #glClearColor(linear_interpol(time,42/255,135/255), linear_interpol(time,42/255,206/255), linear_interpol(time,53/255,235/255), 1.0)
+              
+              # Setting all uniform shader variables
+              # linear_interpol(time_frames[time_index],0.1,1.0)
+              # White light in all components: ambient, diffuse and specular.
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "La"), linear_interpol(time,0.9,0.2), linear_interpol(time,0.94,0.2), linear_interpol(time,0.96,0.3))
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ld"), linear_interpol(time,1.0,0.3), linear_interpol(time,1.0,0.3), linear_interpol(time,1.0,0.35))
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ls"), linear_interpol(time,1.0,0.4), linear_interpol(time,1.0,0.4), linear_interpol(time,1.0,0.4))
+
+              # Object is barely visible at only ambient. Bright white for diffuse and specular components.
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ka"), 0.2, 0.2, 0.2)
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Kd"), 0.9, 0.9, 0.9)
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ks"), 1.0, 1.0, 1.0)
+
+              # TO DO: Explore different parameter combinations to understand their effect!
+
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "lightPosition"), 2, 2, 4)
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "viewPosition"), viewPos[0], viewPos[1],
+                          viewPos[2])
+              glUniform1ui(glGetUniformLocation(lightingPipeline.shaderProgram, "shininess"), 100)
+
+              glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "constantAttenuation"), 0.0001)
+              glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "linearAttenuation"), 0.03)
+              glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "quadraticAttenuation"), 0.01)
+          
+          elif not controller.day:
+              glClearColor(linear_interpol(time,42/255,135/255), linear_interpol(time,42/255,206/255), linear_interpol(time,53/255,235/255), 1.0)
+              # Setting all uniform shader variables
+
+              # White light in all components: ambient, diffuse and specular.
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "La"), linear_interpol(time,0.2,0.9), linear_interpol(time,0.2,0.94), linear_interpol(time,0.3,0.96))
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ld"), linear_interpol(time,0.3,1.0), linear_interpol(time,0.3,1.0), linear_interpol(time,0.35,1.0))
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ls"), linear_interpol(time,0.4,1.0),  linear_interpol(time,0.4,1.0),  linear_interpol(time,0.4,1.0))
+
+              # Object is barely visible at only ambient. Bright white for diffuse and specular components.
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ka"), 0.2, 0.2, 0.2)
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Kd"), 0.9, 0.9, 0.9)
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ks"), 1.0, 1.0, 1.0)
+
+              # TO DO: Explore different parameter combinations to understand their effect!
+
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "lightPosition"), 2, 2, 4)
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "viewPosition"), viewPos[0], viewPos[1],
+                          viewPos[2])
+              glUniform1ui(glGetUniformLocation(lightingPipeline.shaderProgram, "shininess"), 100)
+
+              glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "constantAttenuation"), 0.0001)
+              glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "linearAttenuation"), 0.03)
+              glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "quadraticAttenuation"), 0.01)
+              
+
+
+          
+          ##
+          glUniformMatrix4fv(glGetUniformLocation(lightingPipeline.shaderProgram, "projection"), 1, GL_TRUE, projection)
+          glUniformMatrix4fv(glGetUniformLocation(lightingPipeline.shaderProgram, "view"), 1, GL_TRUE, view)    
           sg.drawSceneGraphNode(willisTower, lightingPipeline, "model")
+          sg.drawSceneGraphNode(floor, lightingPipeline, "model")
           
         elif controller.building == EMPIRE_STATE:
+          if controller.day:
+              glClearColor(linear_interpol(time,135/255,42/255), linear_interpol(time,206/255,42/255), linear_interpol(time,235/255,53/255), 1.0) 
+              
+              #glClearColor(linear_interpol(time,42/255,135/255), linear_interpol(time,42/255,206/255), linear_interpol(time,53/255,235/255), 1.0)
+              
+              # Setting all uniform shader variables
+              # linear_interpol(time_frames[time_index],0.1,1.0)
+              # White light in all components: ambient, diffuse and specular.
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "La"), linear_interpol(time,0.9,0.2), linear_interpol(time,0.94,0.2), linear_interpol(time,0.96,0.3))
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ld"), linear_interpol(time,1.0,0.3), linear_interpol(time,1.0,0.3), linear_interpol(time,1.0,0.35))
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ls"), linear_interpol(time,1.0,0.4), linear_interpol(time,1.0,0.4), linear_interpol(time,1.0,0.4))
+
+              # Object is barely visible at only ambient. Bright white for diffuse and specular components.
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ka"), 0.2, 0.2, 0.2)
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Kd"), 0.9, 0.9, 0.9)
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ks"), 1.0, 1.0, 1.0)
+
+              # TO DO: Explore different parameter combinations to understand their effect!
+
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "lightPosition"), 2, 2, 4)
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "viewPosition"), viewPos[0], viewPos[1],
+                          viewPos[2])
+              glUniform1ui(glGetUniformLocation(lightingPipeline.shaderProgram, "shininess"), 100)
+
+              glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "constantAttenuation"), 0.0001)
+              glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "linearAttenuation"), 0.03)
+              glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "quadraticAttenuation"), 0.01)
+          
+          elif not controller.day:
+              glClearColor(linear_interpol(time,42/255,135/255), linear_interpol(time,42/255,206/255), linear_interpol(time,53/255,235/255), 1.0)
+              # Setting all uniform shader variables
+
+              # White light in all components: ambient, diffuse and specular.
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "La"), linear_interpol(time,0.2,0.9), linear_interpol(time,0.2,0.94), linear_interpol(time,0.3,0.96))
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ld"), linear_interpol(time,0.3,1.0), linear_interpol(time,0.3,1.0), linear_interpol(time,0.35,1.0))
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ls"), linear_interpol(time,0.4,1.0),  linear_interpol(time,0.4,1.0),  linear_interpol(time,0.4,1.0))
+
+              # Object is barely visible at only ambient. Bright white for diffuse and specular components.
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ka"), 0.2, 0.2, 0.2)
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Kd"), 0.9, 0.9, 0.9)
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ks"), 1.0, 1.0, 1.0)
+
+              # TO DO: Explore different parameter combinations to understand their effect!
+
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "lightPosition"), 2, 2, 4)
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "viewPosition"), viewPos[0], viewPos[1],
+                          viewPos[2])
+              glUniform1ui(glGetUniformLocation(lightingPipeline.shaderProgram, "shininess"), 100)
+
+              glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "constantAttenuation"), 0.0001)
+              glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "linearAttenuation"), 0.03)
+              glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "quadraticAttenuation"), 0.01)
+              
+
+
+          
+          ##
+          glUniformMatrix4fv(glGetUniformLocation(lightingPipeline.shaderProgram, "projection"), 1, GL_TRUE, projection)
+          glUniformMatrix4fv(glGetUniformLocation(lightingPipeline.shaderProgram, "view"), 1, GL_TRUE, view)    
           sg.drawSceneGraphNode(empireState, lightingPipeline, "model")
+          sg.drawSceneGraphNode(floor, lightingPipeline, "model")
           
         elif controller.building == BURJ_AL_ARAB:
-          sg.drawSceneGraphNode(burjAlArab, lightingPipeline, "model")
+          if controller.day:
+              glClearColor(linear_interpol(time,255/255,42/255), linear_interpol(time,229/255,42/255), linear_interpol(time,119/255,53/255), 1.0) 
+              
+              #glClearColor(linear_interpol(time,42/255,135/255), linear_interpol(time,42/255,206/255), linear_interpol(time,53/255,235/255), 1.0)
+              
+              # Setting all uniform shader variables
+              # linear_interpol(time_frames[time_index],0.1,1.0)
+              # White light in all components: ambient, diffuse and specular.
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "La"), linear_interpol(time,0.99,0.2), linear_interpol(time,0.81,0.2), linear_interpol(time,0.27,0.3))
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ld"), linear_interpol(time,1.0,0.3), linear_interpol(time,1.0,0.3), linear_interpol(time,1.0,0.35))
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ls"), linear_interpol(time,1.0,0.4), linear_interpol(time,1.0,0.4), linear_interpol(time,1.0,0.4))
 
-        sg.drawSceneGraphNode(floor, lightingPipeline, "model")
+              # Object is barely visible at only ambient. Bright white for diffuse and specular components.
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ka"), 0.2, 0.2, 0.2)
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Kd"), 0.9, 0.9, 0.9)
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ks"), 1.0, 1.0, 1.0)
+
+              # TO DO: Explore different parameter combinations to understand their effect!
+
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "lightPosition"), 2, 2, 4)
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "viewPosition"), viewPos[0], viewPos[1],
+                          viewPos[2])
+              glUniform1ui(glGetUniformLocation(lightingPipeline.shaderProgram, "shininess"), 100)
+
+              glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "constantAttenuation"), 0.0001)
+              glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "linearAttenuation"), 0.03)
+              glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "quadraticAttenuation"), 0.01)
+          
+          elif not controller.day:
+              glClearColor(linear_interpol(time,42/255,255/255), linear_interpol(time,42/255,229/255), linear_interpol(time,53/255,119/255), 1.0)
+              # Setting all uniform shader variables
+
+              # White light in all components: ambient, diffuse and specular.
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "La"), linear_interpol(time,0.2,0.99), linear_interpol(time,0.2,0.81), linear_interpol(time,0.3,0.27))
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ld"), linear_interpol(time,0.3,1.0), linear_interpol(time,0.3,1.0), linear_interpol(time,0.35,1.0))
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ls"), linear_interpol(time,0.4,1.0),  linear_interpol(time,0.4,1.0),  linear_interpol(time,0.4,1.0))
+
+              # Object is barely visible at only ambient. Bright white for diffuse and specular components.
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ka"), 0.2, 0.2, 0.2)
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Kd"), 0.9, 0.9, 0.9)
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ks"), 1.0, 1.0, 1.0)
+
+              # TO DO: Explore different parameter combinations to understand their effect!
+
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "lightPosition"), 2, 2, 4)
+              glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "viewPosition"), viewPos[0], viewPos[1],
+                          viewPos[2])
+              glUniform1ui(glGetUniformLocation(lightingPipeline.shaderProgram, "shininess"), 100)
+
+              glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "constantAttenuation"), 0.0001)
+              glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "linearAttenuation"), 0.03)
+              glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "quadraticAttenuation"), 0.01)
+              
+
+
+          
+          ##
+          glUniformMatrix4fv(glGetUniformLocation(lightingPipeline.shaderProgram, "projection"), 1, GL_TRUE, projection)
+          glUniformMatrix4fv(glGetUniformLocation(lightingPipeline.shaderProgram, "view"), 1, GL_TRUE, view)    
+          sg.drawSceneGraphNode(burjAlArab, lightingPipeline, "model")
+          sg.drawSceneGraphNode(floor, lightingPipeline, "model")
+
+        
         # Once the drawing is rendered, buffers are swap so an uncomplete drawing is never seen.
         glfw.swap_buffers(window)
 
