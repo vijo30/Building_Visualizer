@@ -1,7 +1,4 @@
 # coding=utf-8
-"""
-Showing lighting effects over two textured objects: Flat, Gauraud and Phong.
-"""
 
 import glfw
 import copy
@@ -18,9 +15,6 @@ import grafica.lighting_shaders as ls
 from grafica.assets_path import getAssetPath
 import tarea2modelos as modelo
 import grafica.scene_graph as sg
-
-__author__ = "Daniel Calderon"
-__license__ = "MIT"
 
 LIGHT_FLAT = 0
 LIGHT_GOURAUD = 1
@@ -43,11 +37,6 @@ BURJ_AL_ARAB = 2
 def linear_interpol(t, a, b):
     return a * t + b * (1 - t)
 
-
-
-
-
-#linear_interpol(time_frames[time_index],a,b)
 # A class to store the application control
 class Controller:
     def __init__(self):
@@ -263,7 +252,7 @@ if __name__ == "__main__":
     
     t0 = glfw.get_time()
     camera_theta = np.pi / 4
-    cameraZ = 1
+    cameraZ = 0.5
 
     while not glfw.window_should_close(window):
 
@@ -301,7 +290,7 @@ if __name__ == "__main__":
         if controller.view == VIEW_1:
           camX = 0
           camY = 3
-          camZ = 1
+          camZ = 0.5
           viewPos = np.array([camX, camY, camZ])
           view = tr.lookAt(
             viewPos,
@@ -343,8 +332,8 @@ if __name__ == "__main__":
         )
           
         elif controller.view == VIEW_5:
-          camX = 3 * np.sin(camera_theta)
-          camY = 3 * np.cos(camera_theta)
+          camX = 1 * np.sin(camera_theta)
+          camY = 1 * np.cos(camera_theta)
           camZ = cameraZ
           viewPos = np.array([camX, camY, camZ])
           view = tr.lookAt(
@@ -392,7 +381,6 @@ if __name__ == "__main__":
           if controller.day:
               glClearColor(linear_interpol(time,135/255,42/255), linear_interpol(time,206/255,42/255), linear_interpol(time,235/255,53/255), 1.0) 
               
-              #glClearColor(linear_interpol(time,42/255,135/255), linear_interpol(time,42/255,206/255), linear_interpol(time,53/255,235/255), 1.0)
               
               # Setting all uniform shader variables
               # linear_interpol(time_frames[time_index],0.1,1.0)
@@ -455,7 +443,6 @@ if __name__ == "__main__":
           if controller.day:
               glClearColor(linear_interpol(time,135/255,42/255), linear_interpol(time,206/255,42/255), linear_interpol(time,235/255,53/255), 1.0) 
               
-              #glClearColor(linear_interpol(time,42/255,135/255), linear_interpol(time,42/255,206/255), linear_interpol(time,53/255,235/255), 1.0)
               
               # Setting all uniform shader variables
               # linear_interpol(time_frames[time_index],0.1,1.0)
@@ -516,9 +503,8 @@ if __name__ == "__main__":
           
         elif controller.building == BURJ_AL_ARAB:
           if controller.day:
-              glClearColor(linear_interpol(time,255/255,42/255), linear_interpol(time,229/255,42/255), linear_interpol(time,119/255,53/255), 1.0) 
+              glClearColor(linear_interpol(time,135/255,42/255), linear_interpol(time,206/255,42/255), linear_interpol(time,235/255,53/255), 1.0)  
               
-              #glClearColor(linear_interpol(time,42/255,135/255), linear_interpol(time,42/255,206/255), linear_interpol(time,53/255,235/255), 1.0)
               
               # Setting all uniform shader variables
               # linear_interpol(time_frames[time_index],0.1,1.0)
@@ -544,7 +530,7 @@ if __name__ == "__main__":
               glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "quadraticAttenuation"), 0.01)
           
           elif not controller.day:
-              glClearColor(linear_interpol(time,42/255,255/255), linear_interpol(time,42/255,229/255), linear_interpol(time,53/255,119/255), 1.0)
+              glClearColor(linear_interpol(time,42/255,135/255), linear_interpol(time,42/255,206/255), linear_interpol(time,53/255,235/255), 1.0)
               # Setting all uniform shader variables
 
               # White light in all components: ambient, diffuse and specular.

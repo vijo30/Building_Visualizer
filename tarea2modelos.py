@@ -83,8 +83,9 @@ def readOBJ(filename):
             # Checking each of the triangle vertices
             for i in range(0, 3):
                 vertex = vertices[face[i][0] - 1]
-                normal = normals[face[i][2] - 1]
                 textCoord = textCoords[face[i][1] - 1]
+                normal = normals[face[i][2] - 1]
+
 
                 vertexData += [
                     vertex[0], vertex[1], vertex[2],
@@ -338,7 +339,7 @@ def createBurjAlArab(object, pipeline):
   
   shape2Base = readOBJ(getAssetPath('bender_pillar.obj'))
   gpu2Base = createGPUShape(pipeline, shape2Base)
-  gpu2Base.texture = es.textureSimpleSetup(getAssetPath("dice3.jpg"), GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR)
+  gpu2Base.texture = es.textureSimpleSetup(getAssetPath("dice6.jpg"), GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR)
   
   
   left_pillar = sg.SceneGraphNode("left_pillar")
@@ -403,11 +404,11 @@ def createBurjAlArab(object, pipeline):
   base.childs += [gpuBase]
   
   pillar = sg.SceneGraphNode("pillar")
-  pillar.transform = tr.matmul([tr.translate(-0.28-0.34, -0.28*-np.sqrt(3), 0.88), tr.rotationZ(-np.pi/3), tr.rotationX(np.pi/2), tr.scale(0.35, 0.35, 0.25)])
+  pillar.transform = tr.matmul([tr.translate(-0.28-0.35, -0.28*-np.sqrt(3), 0.88), tr.rotationZ(-np.pi/3), tr.rotationX(np.pi/2), tr.scale(0.35, 0.35, 0.25)])
   pillar.childs += [gpu2Base]
   
   pillar2 = sg.SceneGraphNode("pillar2")
-  pillar2.transform = tr.matmul([tr.translate(0.28+0.34, -0.28*-np.sqrt(3), 0.88), tr.rotationZ(np.pi+np.pi/3), tr.rotationX(np.pi/2), tr.scale(0.35, 0.35, 0.25)])
+  pillar2.transform = tr.matmul([tr.translate(0.28+0.35, -0.28*-np.sqrt(3), 0.88), tr.rotationZ(np.pi+np.pi/3), tr.rotationX(np.pi/2), tr.scale(0.35, 0.35, 0.25)])
   pillar2.childs += [gpu2Base]
   
   quad = sg.SceneGraphNode("quad")
