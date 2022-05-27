@@ -251,7 +251,7 @@ if __name__ == "__main__":
 
     empireState = modelo.createEmpireState(gpuDice3)
     
-    burjAlArab = modelo.createBurjAlArab(gpuDice3)
+    burjAlArab = modelo.createBurjAlArab(gpuDice3, texturePhongPipeline)
     
     floor = modelo.create_floor(texturePhongPipeline)
     
